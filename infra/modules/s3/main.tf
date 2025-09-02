@@ -16,7 +16,7 @@ resource "aws_s3_bucket" "coingecko-storage" {
 
 resource "aws_s3_bucket_policy" "coingecko-storage" {
   bucket = aws_s3_bucket.coingecko-storage.id
-  policy = file("${path.root}/../../policies/s3/coingecko-storage-policy.json")
+  policy = file("${path.root}/policies/coingecko-storage-policy.json")
 }
 
 # Bucket de logs
@@ -33,5 +33,5 @@ resource "aws_s3_bucket_logging" "data_logging" {
 
 resource "aws_s3_bucket_policy" "log_bucket_policy" {
   bucket = aws_s3_bucket.log_bucket.id
-  policy = file("${path.root}/../../policies/s3/log-bucket-policy.json")
+  policy = file("${path.root}/policies/log-bucket-policy.json")
 }
