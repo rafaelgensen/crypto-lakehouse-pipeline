@@ -20,6 +20,12 @@ on:
           - "true"
 
 jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+
   terraform:
     if: startsWith(github.head_ref || github.ref_name, 'prod/') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
