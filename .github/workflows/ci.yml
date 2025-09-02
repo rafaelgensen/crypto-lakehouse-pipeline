@@ -43,20 +43,22 @@ jobs:
           aws-region: us-east-1
 
       - name: Inicializar Terraform
-        run: terraform -chdir=infra init
+        run: |
+          cd infra
+          terraform init
 
       - name: Validar configuração
-        run: terraform -chdir=infra validate
+        run: terraform validate
 
       - name: Executar Plano
-        run: terraform -chdir=infra plan -out=tfplan.out
+        run: terraform plan -out=tfplan.out
 
       - name: Aplicar ou Destruir Recursos
         run: |
           if [ "${{ github.event.inputs.destroy }}" == "true" ]; then
             echo "⚠️ Destruindo infraestrutura..."
-            terraform -chdir=infra destroy -auto-approve
+            terraform destroy -auto-approve
           else
             echo "✅ Aplicando infraestrutura..."
-            terraform -chdir=infra apply -auto-approve tfplan.out
+            terraform apply -auto-approve tfplan.out
           fi
