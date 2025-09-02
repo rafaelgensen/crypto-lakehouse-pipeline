@@ -20,16 +20,15 @@ on:
           - "true"
 
 jobs:
-  deploy:
+  terraform:
+    name: Terraform Deploy or Destroy - Capabilities
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: infra
 
-  terraform:
     if: startsWith(github.head_ref || github.ref_name, 'prod/') || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    name: Terraform Deploy or Destroy - Capabilities
 
     steps:
       - name: Checkout do código
