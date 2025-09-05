@@ -64,11 +64,11 @@ resource "aws_s3_bucket_policy" "log_bucket_policy" {
 
 
 # Bucket para armazenar scripts do Glue
-resource "aws_s3_bucket" "glue_scripts" {
+resource "aws_s3_bucket" "glue-scripts" {
   bucket = "glue-scripts-663354324751"
 }
 
-resource "aws_s3_bucket_policy" "glue_scripts" {
-  bucket = aws_s3_bucket.glue_scripts.id
-  policy = file("${path.module}/policies/glue_scripts-policy.json")
+resource "aws_s3_bucket_policy" "glue-scripts" {
+  bucket = aws_s3_bucket.glue-scripts.id
+  policy = file("${path.module}/policies/glue-scripts-policy.json")
 }
