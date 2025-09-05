@@ -1,85 +1,74 @@
 
 
-# Bucket Backend - Standard
+# Bucket Backend - States
 resource "aws_s3_bucket" "coingecko-states" {
   bucket = "coingecko-states-663354324751"
 }
 
 
+# Bucket Coin-Gecko - Staging
 
-# Bucket Coin-Gecko - Standard
-resource "aws_s3_bucket" "coingecko-storage" {
-  bucket = "coingecko-storage-663354324751"
+resource "aws_s3_bucket" "coingecko-staging" {
+  bucket = "coingecko-staging-663354324751"
 }
 
-# Bucket Coin-Gecko Policy
+# Bucket Coin-Gecko - Staging Policy
 
-resource "aws_s3_bucket_policy" "coingecko-storage" {
-  bucket = aws_s3_bucket.coingecko-storage.id
-  policy = jsonencode({
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AllowGlueJobsAndLambdaAccess",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": [
-          "arn:aws:iam::663354324751:role/glue-bronze-role",
-          "arn:aws:iam::663354324751:role/glue-silver-role",
-          "arn:aws:iam::663354324751:role/lambda-ingestion-role"
-        ]
-      },
-      "Action": [
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:DeleteObject",
-        "s3:ListBucket"
-      ],
-      "Resource": [
-        "arn:aws:s3:::coingecko-storage-663354324751",
-        "arn:aws:s3:::coingecko-storage-663354324751/*"
-      ],
-      "Condition": {
-        "StringEquals": {
-          "aws:SourceAccount": "663354324751"
-        }
-      }
-    }
-  ]
-})
+resource "aws_s3_bucket_policy" "coingecko-staging" {
+  bucket = aws_s3_bucket.coingecko-staging.id
+  policy = file("${path.module}/policies/coingecko-staging-policy.json")
+}
+
+# Bucket Coin-Gecko - Silver
+
+resource "aws_s3_bucket" "coingecko-silver" {
+  bucket = "coingecko-silver-663354324751"
+}
+
+# Bucket Coin-Gecko - Silver Policy
+
+resource "aws_s3_bucket_policy" "coingecko-silver" {
+  bucket = aws_s3_bucket.coingecko-silver.id
+  policy = file("${path.module}/policies/coingecko-silver-policy.json")
+}
+
+# Bucket Coin-Gecko - Gold
+
+resource "aws_s3_bucket" "coingecko-gold" {
+  bucket = "coingecko-gold-663354324751"
+}
+
+# Bucket Coin-Gecko - Gold Policy
+
+resource "aws_s3_bucket_policy" "coingecko-gold" {
+  bucket = aws_s3_bucket.coingecko-gold.id
+  policy = file("${path.module}/policies/coingecko-gold-policy.json")
 }
 
 # Bucket de logs
 resource "aws_s3_bucket" "log_bucket" {
-  bucket = "logs-coingecko-storage-663354324751"
+  bucket = "logs-coingecko-staging-663354324751"
 }
 
 # Habilitar logging
 resource "aws_s3_bucket_logging" "data_logging" {
-  bucket = aws_s3_bucket.coingecko-storage.id
+  bucket = aws_s3_bucket.coingecko-staging.id
   target_bucket = aws_s3_bucket.log_bucket.id
   target_prefix = "logs/"
 }
 
 resource "aws_s3_bucket_policy" "log_bucket_policy" {
   bucket = aws_s3_bucket.log_bucket.id
-  policy = jsonencode({
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "S3ServerAccessLogsPolicy",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "logging.s3.amazonaws.com"
-      },
-      "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::logs-coingecko-storage-663354324751/logs/*",
-      "Condition": {
-        "StringEquals": {
-          "aws:SourceAccount": "663354324751"
-        }
-      }
-    }
-  ]
-})
+  policy = file("${path.module}/policies/log-bucket-policy.json")
+}
+
+
+# Bucket para armazenar scripts do Glue
+resource "aws_s3_bucket" "glue-scripts" {
+  bucket = "glue-scripts-663354324751"
+}
+
+resource "aws_s3_bucket_policy" "glue-scripts" {
+  bucket = aws_s3_bucket.glue-scripts.id
+  policy = file("${path.module}/policies/glue-scripts-policy.json")
 }

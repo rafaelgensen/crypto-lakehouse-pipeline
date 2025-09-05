@@ -8,7 +8,7 @@
         "Service": "logging.s3.amazonaws.com"
       },
       "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::logs-coingecko-storage-663354324751/logs/*",
+      "Resource": "arn:aws:s3:::logs-coingecko-staging-663354324751/logs/*",
       "Condition": {
         "StringEquals": {
           "aws:SourceAccount": "663354324751"

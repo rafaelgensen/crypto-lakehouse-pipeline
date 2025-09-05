@@ -2,14 +2,10 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "AllowGlueJobsAndLambdaAccess",
+      "Sid": "AllowGlueAndLambdaAccess",
       "Effect": "Allow",
       "Principal": {
-        "AWS": [
-          "arn:aws:iam::663354324751:role/glue-bronze-role",
-          "arn:aws:iam::663354324751:role/glue-silver-role",
-          "arn:aws:iam::663354324751:role/lambda-ingestion-role"
-        ]
+        "Service": "glue.amazonaws.com"
       },
       "Action": [
         "s3:GetObject",
@@ -18,8 +14,8 @@
         "s3:ListBucket"
       ],
       "Resource": [
-        "arn:aws:s3:::coingecko-storage-663354324751",
-        "arn:aws:s3:::coingecko-storage-663354324751/*"
+        "arn:aws:s3:::coingecko-silver-663354324751",
+        "arn:aws:s3:::coingecko-silver-663354324751/*"
       ],
       "Condition": {
         "StringEquals": {
