@@ -47,12 +47,12 @@ resource "aws_s3_bucket_policy" "coingecko-gold" {
 
 # Bucket de logs
 resource "aws_s3_bucket" "log_bucket" {
-  bucket = "logs-coingecko-storage-663354324751"
+  bucket = "logs-coingecko-staging-663354324751"
 }
 
 # Habilitar logging
 resource "aws_s3_bucket_logging" "data_logging" {
-  bucket = aws_s3_bucket.coingecko-storage.id
+  bucket = aws_s3_bucket.coingecko-staging.id
   target_bucket = aws_s3_bucket.log_bucket.id
   target_prefix = "logs/"
 }
