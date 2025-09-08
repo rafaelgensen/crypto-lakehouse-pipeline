@@ -22,5 +22,5 @@ resource "aws_iam_role_policy" "glue_ingest_access" {
   name = "glue-ingest-s3-access"
   role = aws_iam_role.glue_ingest_role.id
 
-  policy = file("${path.module}/../policies/policy_glue_ingest.json")
+  policy = file("${path.module}/policy_glue_ingest.json")
 }

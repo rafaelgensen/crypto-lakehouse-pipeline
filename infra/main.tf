@@ -31,3 +31,7 @@ module "s3" {
 module "glue" {
   source = "./modules/glue"
 }
+
+module "glue_ingest" {
+  source = "./modules/glue/ingest_job"
+}
