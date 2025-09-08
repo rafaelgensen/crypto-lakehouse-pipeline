@@ -42,3 +42,7 @@ module "glue_bronze" {
 module "glue_silver" {
   source = "./modules/glue/silver_job"
 }
+
+module "glue_gold" {
+  source = "./modules/glue/gold_job"
+}
