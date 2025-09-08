@@ -1,41 +1,49 @@
 import requests
 import json
+import logging
 from datetime import datetime
 from pyspark.sql import SparkSession
 
-# Spark session
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Initialize Spark session
 spark = SparkSession.builder.appName("CoingeckoIngestion").getOrCreate()
 
-# Configs
-API_KEY = "CG-HvcvJstvuHKYZCRHafKrWgtd"
+# Configuration
+API_KEY = "CG-HvcvJstvuHKYZCRHafKrWgtd"  # Sensitive: consider securing this
 url = "https://api.coingecko.com/api/v3/coins/markets"
 bucket_name = "coingecko-staging-663354324751"
 
-# Chamada API
+# API request parameters
 params = {
     "x_cg_demo_api_key": API_KEY,
     "vs_currency": "usd",
     "sparkline": "true",
     "per_page": 150
 }
+
+# Make API request
+logger.info("Calling CoinGecko API...")
 resp = requests.get(url, params=params)
 
 if resp.status_code == 200:
     data = resp.json()
 
-    # Cria DataFrame
+    # Create Spark DataFrame from JSON response
     df = spark.read.json(spark.sparkContext.parallelize([json.dumps(data)]))
 
-    # Data no formato YYYYMMDD
+    # Format current date as YYYYMMDD
     now = datetime.utcnow().strftime("%Y%m%d")
     prefix = f"anomesdia={now}/"
 
-    # Caminho final
+    # Define S3 output path
     output_path = f"s3://{bucket_name}/raw/{prefix}"
 
-    # Escreve em Parquet
+    # Write to S3 in Parquet format
     df.write.mode("append").parquet(output_path)
 
-    print(f"Dados salvos em {output_path}")
+    logger.info(f"Data successfully written to {output_path}")
 else:
-    print(f"Erro {resp.status_code}: {resp.text}")
+    logger.error(f"API Error {resp.status_code}: {resp.text}")
