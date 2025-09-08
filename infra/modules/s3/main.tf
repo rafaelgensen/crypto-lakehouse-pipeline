@@ -19,6 +19,19 @@ resource "aws_s3_bucket_policy" "coingecko-staging" {
   policy = file("${path.module}/policies/coingecko-staging-policy.json")
 }
 
+# Bucket Coin-Gecko - Bronze
+
+resource "aws_s3_bucket" "coingecko-bronze" {
+  bucket = "coingecko-bronze-663354324751"
+}
+
+# Bucket Coin-Gecko - bronze Policy
+
+resource "aws_s3_bucket_policy" "coingecko-bronze" {
+  bucket = aws_s3_bucket.coingecko-bronze.id
+  policy = file("${path.module}/policies/coingecko-bronze-policy.json")
+}
+
 # Bucket Coin-Gecko - Silver
 
 resource "aws_s3_bucket" "coingecko-silver" {
@@ -60,15 +73,4 @@ resource "aws_s3_bucket_logging" "data_logging" {
 resource "aws_s3_bucket_policy" "log_bucket_policy" {
   bucket = aws_s3_bucket.log_bucket.id
   policy = file("${path.module}/policies/log-bucket-policy.json")
-}
-
-
-# Bucket para armazenar scripts do Glue
-resource "aws_s3_bucket" "glue-scripts" {
-  bucket = "glue-scripts-663354324751"
-}
-
-resource "aws_s3_bucket_policy" "glue-scripts" {
-  bucket = aws_s3_bucket.glue-scripts.id
-  policy = file("${path.module}/policies/glue-scripts-policy.json")
 }
