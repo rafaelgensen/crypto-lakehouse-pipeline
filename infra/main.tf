@@ -3,10 +3,14 @@ provider "aws" {
   region = "us-east-1"
 }
 
+# Bucket Backend - States
+resource "aws_s3_bucket" "coingecko-states" {
+  bucket = "coingecko-states-663354324751"
+}
 
 terraform {
   required_version = ">= 1.5.0"
-  
+
 backend "s3" {
    bucket         = "coingecko-states-663354324751"
    key            = "data-pipeline/terraform.tfstate"
