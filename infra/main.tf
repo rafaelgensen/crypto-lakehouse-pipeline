@@ -34,3 +34,8 @@ module "glue" {
 module "glue_ingest" {
   source = "./modules/glue/ingest_job"
 }
+
+module "glue_bronze" {
+  source = "./modules/glue/bronze_job"
+}
+
