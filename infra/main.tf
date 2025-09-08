@@ -39,3 +39,6 @@ module "glue_bronze" {
   source = "./modules/glue/bronze_job"
 }
 
+module "glue_silver" {
+  source = "./modules/glue/silver_job"
+}
