@@ -4,7 +4,7 @@
 resource "aws_s3_object" "glue_ingest_script" {
   bucket = aws_s3_bucket.glue_scripts.id 
   key    = "glue_job_ingest.py"
-  source = "${path.module}/../scripts/glue_job_ingest.py"
+  source = "${path.module}/glue_job_ingest.py"
 }
 
 # Glue Job
