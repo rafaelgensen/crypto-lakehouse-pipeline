@@ -4,9 +4,6 @@
     {
       "Sid": "AllowGlueAccess",
       "Effect": "Allow",
-      "Principal": {
-        "Service": "glue.amazonaws.com"
-      },
       "Action": [
         "s3:GetObject",
         "s3:PutObject",
