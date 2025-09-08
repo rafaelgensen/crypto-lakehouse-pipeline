@@ -11,7 +11,7 @@ resource "aws_s3_bucket_policy" "glue-scripts" {
 
 # Upload do script
 resource "aws_s3_object" "glue_ingest_script" {
-  bucket = aws_s3_bucket.glue_scripts.id 
+  bucket = aws_s3_bucket.glue-scripts.id 
   key    = "glue_job_ingest.py"
   source = "${path.module}/glue_job_ingest.py"
 }
@@ -23,7 +23,7 @@ resource "aws_glue_job" "ingest" {
 
   command {
     name            = "glueingest"
-    script_location = "s3://${aws_s3_bucket.glue_scripts.bucket}/glue_job_ingest.py"
+    script_location = "s3://${aws_s3_bucket.glue-scripts.bucket}/glue_job_ingest.py"
     python_version  = "3"
   }
 
