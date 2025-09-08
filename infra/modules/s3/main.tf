@@ -1,11 +1,3 @@
-
-
-# Bucket Backend - States
-resource "aws_s3_bucket" "coingecko-states" {
-  bucket = "coingecko-states-663354324751"
-}
-
-
 # Bucket Coin-Gecko - Staging
 
 resource "aws_s3_bucket" "coingecko-staging" {
