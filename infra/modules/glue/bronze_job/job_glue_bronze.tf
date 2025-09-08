@@ -3,7 +3,7 @@
 resource "aws_s3_object" "glue_bronze_script" {
   bucket = "coingecko-glue-scripts-663354324751"
   key    = "glue_job_bronze.py"
-  source = "${path.module}/glue_job_silver.py"
+  source = "${path.module}/glue_job_bronze.py"
 }
 
 # Glue Job
