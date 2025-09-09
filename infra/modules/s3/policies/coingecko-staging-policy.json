@@ -5,7 +5,10 @@
       "Sid": "AllowGlueAndLambdaAccess",
       "Effect": "Allow",
       "Principal": {
-        "Service": "glue.amazonaws.com"
+        "AWS" : [
+          "arn:aws:iam::663354324751:role/glue-ingest-role",
+          "arn:aws:iam::663354324751:role/glue-bronze-role"
+        ]
       },
       "Action": [
         "s3:GetObject",
