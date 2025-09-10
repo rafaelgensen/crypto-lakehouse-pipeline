@@ -24,6 +24,7 @@ resource "aws_glue_job" "bronze" {
     default_arguments = {
     "--enable-metrics"      = "true"                # send metrics to CloudWatch
     "--TempDir"             = "s3://coingecko-bronze-663354324751/temp/"
+    "--dq-results-path"     = "s3://coingecko-bronze-663354324751/dq-results/"
   }
 
 }
