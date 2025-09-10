@@ -13,7 +13,7 @@ backend "s3" {
    encrypt        = true
  }
 }
-
+  
 # Tags globais
 locals {
   common_tags = {
