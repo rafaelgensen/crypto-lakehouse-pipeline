@@ -46,3 +46,7 @@ module "glue_silver" {
 module "glue_gold" {
   source = "./modules/glue/gold_job"
 }
+
+module "stepfunc" {
+  source = "./modules/stepfunc"
+}
