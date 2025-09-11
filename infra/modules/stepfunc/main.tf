@@ -110,13 +110,7 @@ resource "aws_sfn_state_machine" "glue_etl_pipeline" {
         Type    = "Fail",
         Cause   = "ETL Job Failed",
         Error   = "JobExecutionError"
-      },
-      Retry = [{
-			  ErrorEquals     = ["Glue.JobFailedException"],
-			  IntervalSeconds = 60,        # Wait time between retries
-			  MaxAttempts     = 3,         # Maximum number of attempts
-			  BackoffRate     = 2.0        # Wait time increases exponentially
-			  }]
+      }
     }
   })
 
