@@ -1,11 +1,3 @@
-
-
-# Bucket Backend - States
-resource "aws_s3_bucket" "coingecko-states" {
-  bucket = "coingecko-states-663354324751"
-}
-
-
 # Bucket Coin-Gecko - Staging
 
 resource "aws_s3_bucket" "coingecko-staging" {
@@ -64,10 +56,28 @@ resource "aws_s3_bucket" "log_bucket" {
 }
 
 # Habilitar logging
-resource "aws_s3_bucket_logging" "data_logging" {
+resource "aws_s3_bucket_logging" "staging_logging" {
   bucket = aws_s3_bucket.coingecko-staging.id
   target_bucket = aws_s3_bucket.log_bucket.id
-  target_prefix = "logs/"
+  target_prefix = "staging/"
+}
+
+resource "aws_s3_bucket_logging" "bronze_logging" {
+  bucket = aws_s3_bucket.coingecko-bronze.id
+  target_bucket = aws_s3_bucket.log_bucket.id
+  target_prefix = "bronze/"
+}
+
+resource "aws_s3_bucket_logging" "silver_logging" {
+  bucket = aws_s3_bucket.coingecko-silver.id
+  target_bucket = aws_s3_bucket.log_bucket.id
+  target_prefix = "silver/"
+}
+
+resource "aws_s3_bucket_logging" "gold_logging" {
+  bucket = aws_s3_bucket.coingecko-gold.id
+  target_bucket = aws_s3_bucket.log_bucket.id
+  target_prefix = "gold/"
 }
 
 resource "aws_s3_bucket_policy" "log_bucket_policy" {

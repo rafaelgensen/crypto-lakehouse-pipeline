@@ -14,7 +14,9 @@
         "arn:aws:s3:::coingecko-scripts-663354324751",
         "arn:aws:s3:::coingecko-scripts-663354324751/*",
         "arn:aws:s3:::coingecko-staging-663354324751",
-        "arn:aws:s3:::coingecko-staging-663354324751/*"
+        "arn:aws:s3:::coingecko-staging-663354324751/*",
+        "arn:aws:s3:::coingecko-bronze-663354324751",
+        "arn:aws:s3:::coingecko-bronze-663354324751/*"
       ],
       "Condition": {
         "StringEquals": {
