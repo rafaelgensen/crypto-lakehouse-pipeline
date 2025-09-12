@@ -47,12 +47,7 @@ module "glue_gold" {
   source = "./modules/glue/gold_job"
 }
 
-variable "API_KEY_CG_STEP" {
-  description = "API key for external service"
-  type        = string
-  sensitive   = true
-}
-
 module "stepfunc" {
   source = "./modules/stepfunc"
+    API_KEY_CG_STEP = var.API_KEY_CG_STEP
 }
