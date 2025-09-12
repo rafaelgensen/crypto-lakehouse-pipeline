@@ -40,7 +40,7 @@ resource "aws_sfn_state_machine" "glue_etl_pipeline" {
         Parameters = {
           JobName = "coingecko-ingest-etl"
           Arguments = {
-            "--API_KEY" = var.API_KEY_CG_STEP
+            "--API_KEY" = var.API_KEY_CG
             
       }
         },
