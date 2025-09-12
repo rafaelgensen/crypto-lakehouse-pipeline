@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 spark = SparkSession.builder.appName("CoingeckoIngestion").getOrCreate()
 
 # Configuration
-API_KEY = '****'
+API_KEY = "CG-HvcvJstvuHKYZCRHafKrWgtd"  # Sensitive: consider securing this
 url = "https://api.coingecko.com/api/v3/coins/markets"
 bucket_name = "coingecko-staging-663354324751"
 
