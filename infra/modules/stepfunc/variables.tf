@@ -3,11 +3,3 @@ variable "API_KEY_CG_STEP" {
   type        = string
   sensitive   = true
 }
-
-variable "teste" {
-  type = int
-  default = 5
-
-}
-
-var.teste
