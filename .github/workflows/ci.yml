@@ -58,5 +58,5 @@ jobs:
             terraform -chdir=infra destroy -auto-approve
           else
             echo "✅ Aplicando infraestrutura..."
-            terraform -chdir=infra apply -auto-approve tfplan.out
+            terraform -chdir=infra apply -auto-approve tfplan.out -var="API_KEY_CG_STEP=${{ secrets.API_KEY.API_KEY_CG }}"
           fi
