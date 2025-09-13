@@ -2,10 +2,10 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "AllowGlueAccess",
+      "Sid": "AllowGlueJobAccess",
       "Effect": "Allow",
       "Principal": {
-        "Service": "glue.amazonaws.com"
+        "AWS": "arn:aws:iam::663354324751:role/glue-ingest-role"
       },
       "Action": [
         "s3:GetObject",
@@ -13,12 +13,10 @@
         "s3:DeleteObject",
         "s3:ListBucket"
       ],
-      "Resource": "arn:aws:s3:::coingecko-glue-scripts-663354324751/*",
-      "Condition": {
-        "StringEquals": {
-          "aws:SourceAccount": "663354324751"
-        }
-      }
+      "Resource": [
+        "arn:aws:s3:::coingecko-glue-scripts-663354324751",
+        "arn:aws:s3:::coingecko-glue-scripts-663354324751/*"
+      ]
     }
   ]
 }

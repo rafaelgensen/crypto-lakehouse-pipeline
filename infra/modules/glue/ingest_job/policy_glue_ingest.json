@@ -4,6 +4,9 @@
     {
       "Sid": "AllowGlueAccess",
       "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::663354324751:role/glue-ingest-role"
+      },
       "Action": [
         "s3:GetObject",
         "s3:PutObject",
@@ -11,14 +14,11 @@
         "s3:ListBucket"
       ],
       "Resource": [
+        "arn:aws:s3:::coingecko-scripts-663354324751",
         "arn:aws:s3:::coingecko-scripts-663354324751/*",
+        "arn:aws:s3:::coingecko-staging-663354324751",
         "arn:aws:s3:::coingecko-staging-663354324751/*"
-      ],
-      "Condition": {
-        "StringEquals": {
-          "aws:SourceAccount": "663354324751"
-        }
-      }
+      ]
     }
   ]
 }
