@@ -28,8 +28,10 @@ resource "aws_glue_job" "ingest" {
   }
 
   glue_version = "4.0"
+  worker_type = "G.1X"
   max_capacity = 2
   description  = "Ingest from Coingecko API"
+  
 
     default_arguments = {
     "--enable-metrics"      = "true"                # send metrics to CloudWatch
