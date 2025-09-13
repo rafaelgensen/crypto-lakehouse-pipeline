@@ -28,7 +28,7 @@ resource "aws_glue_job" "ingest" {
     python_version  = "3"
   }
 
-  glue_version = "4.0"
+  glue_version = "5.0"
   worker_type = "G.1X"
   number_of_workers = 2
   description  = "Ingest from Coingecko API"
