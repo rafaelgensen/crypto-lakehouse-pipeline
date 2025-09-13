@@ -22,8 +22,9 @@ resource "aws_glue_job" "ingest" {
   role_arn = aws_iam_role.glue_ingest_role.arn
 
   command {
-    name            = "glueingest"
+    name            = "glueetl"
     script_location = "s3://${aws_s3_bucket.glue-scripts.bucket}/glue_job_ingest.py"
+    #script_location = "s3://coingecko-glue-scripts-663354324751/glue_job_ingest.py"
     python_version  = "3"
   }
 
