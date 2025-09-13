@@ -3,6 +3,11 @@ import json
 import logging
 from datetime import datetime
 from pyspark.sql import SparkSession
+import sys
+from awsglue.utils import getResolvedOptions
+
+# Declare os parâmetros esperados
+args = getResolvedOptions(sys.argv, ['--API_KEY'])
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -12,7 +17,7 @@ logger = logging.getLogger(__name__)
 spark = SparkSession.builder.appName("CoingeckoIngestion").getOrCreate()
 
 # Configuration
-API_KEY = "CG-HvcvJstvuHKYZCRHafKrWgtd"  # Sensitive: consider securing this
+API_KEY = args['--API_KEY']
 url = "https://api.coingecko.com/api/v3/coins/markets"
 bucket_name = "coingecko-staging-663354324751"
 
