@@ -22,5 +22,5 @@ resource "aws_iam_role_policy" "glue-ingest-s3" {
 
 resource "aws_iam_role_policy_attachment" "glue_ingest" {
   role       = aws_iam_role.glue_ingest_role.name
-  policy_arn = "arn:aws:iam::aws:policy/glue-ingest-s3"
+  policy_arn = aws_iam_policy.glue-ingest-s3.arn
 }
