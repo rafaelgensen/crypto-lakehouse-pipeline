@@ -4,9 +4,6 @@
     {
       "Sid": "AllowGlueJobAccess",
       "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::663354324751:role/glue-ingest-role"
-      },
       "Action": [
         "s3:GetObject",
         "s3:PutObject",
