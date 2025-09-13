@@ -36,6 +36,7 @@ resource "aws_glue_job" "ingest" {
     default_arguments = {
     "--enable-metrics"      = "true"                # send metrics to CloudWatch
     "--TempDir"             = "s3://coingecko-staging-663354324751/temp/"
+    "--job-language"   = "python"
   }
 
 }
