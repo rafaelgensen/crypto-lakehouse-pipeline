@@ -13,8 +13,8 @@ resource "aws_iam_role" "glue_ingest_role" {
   })
 }
 
-resource "aws_iam_role_policy" "glue_ingest_arn" {
-  name = "glue-ingest-s3-arn"
+resource "aws_iam_role_policy" "glue-ingest-s3" {
+  name = "glue-ingest-s3"
   role = aws_iam_role.glue_ingest_role.id
 
   policy = file("${path.module}/policy_glue_ingest.json")
@@ -22,5 +22,5 @@ resource "aws_iam_role_policy" "glue_ingest_arn" {
 
 resource "aws_iam_role_policy_attachment" "glue_ingest" {
   role       = aws_iam_role.glue_ingest_role.name
-  policy_arn = "arn:aws:iam::aws:policy/glue-ingest-s3-arn"
+  policy_arn = "arn:aws:iam::aws:policy/glue-ingest-s3"
 }

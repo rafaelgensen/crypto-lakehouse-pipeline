@@ -11,9 +11,7 @@
         "s3:ListBucket"
       ],
       "Resource": [
-        "arn:aws:s3:::coingecko-scripts-663354324751",
         "arn:aws:s3:::coingecko-scripts-663354324751/*",
-        "arn:aws:s3:::coingecko-staging-663354324751",
         "arn:aws:s3:::coingecko-staging-663354324751/*"
       ],
       "Condition": {
