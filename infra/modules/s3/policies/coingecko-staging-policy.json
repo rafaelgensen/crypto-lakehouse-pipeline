@@ -2,10 +2,27 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "AllowGlueAndLambdaAccess",
+      "Sid": "AllowListBucket",
       "Effect": "Allow",
       "Principal": {
-        "AWS" : [
+        "AWS": [
+          "arn:aws:iam::663354324751:role/glue-ingest-role",
+          "arn:aws:iam::663354324751:role/glue-bronze-role"
+        ]
+      },
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::coingecko-staging-663354324751",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "663354324751"
+        }
+      }
+    },
+    {
+      "Sid": "AllowObjectActions",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
           "arn:aws:iam::663354324751:role/glue-ingest-role",
           "arn:aws:iam::663354324751:role/glue-bronze-role"
         ]
@@ -13,13 +30,9 @@
       "Action": [
         "s3:GetObject",
         "s3:PutObject",
-        "s3:DeleteObject",
-        "s3:ListBucket"
+        "s3:DeleteObject"
       ],
-      "Resource": [
-        "arn:aws:s3:::coingecko-staging-663354324751",
-        "arn:aws:s3:::coingecko-staging-663354324751/*"
-      ],
+      "Resource": "arn:aws:s3:::coingecko-staging-663354324751/*",
       "Condition": {
         "StringEquals": {
           "aws:SourceAccount": "663354324751"
