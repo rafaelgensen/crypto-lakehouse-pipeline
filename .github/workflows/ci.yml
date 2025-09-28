@@ -50,12 +50,25 @@ jobs:
 
       - name: Executar Plano
         run: |
+          echo "::add-mask::${{ secrets.API_KEY_CG }}"
           export TF_VAR_API_KEY_CG="${{ secrets.API_KEY_CG }}"
+
+          if [ -z "$TF_VAR_API_KEY_CG" ]; then
+            echo "❌ Variável TF_VAR_API_KEY_CG está vazia!"
+            exit 1
+          fi
+
           terraform -chdir=infra plan -out=tfplan.out
 
       - name: Aplicar ou Destruir Recursos
         run: |
           export TF_VAR_API_KEY_CG="${{ secrets.API_KEY_CG }}"
+
+          if [ -z "$TF_VAR_API_KEY_CG" ]; then
+            echo "❌ Variável TF_VAR_API_KEY_CG está vazia!"
+            exit 1
+          fi
+
           if [ "${{ github.event.inputs.destroy }}" == "true" ]; then
             echo "⚠️ Destruindo infraestrutura..."
             terraform -chdir=infra destroy -auto-approve
