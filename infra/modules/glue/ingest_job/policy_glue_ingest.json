@@ -23,7 +23,7 @@
       "Action": [
         "ssm:GetParameter"
       ],
-      "Resource": "arn:aws:ssm:us-east-1:123456789012:parameter/coing-gecko/api_key"
+      "Resource": "arn:aws:ssm:us-east-1:663354324751:parameter/coing-gecko/api_key"
     }
   ]
 }
