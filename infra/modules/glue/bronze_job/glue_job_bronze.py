@@ -15,7 +15,7 @@ spark = SparkSession.builder.appName("CoingeckoBronzeJob").getOrCreate()
 # Configurations
 # ========================
 bucket_staging = "coingecko-staging-663354324751"
-bucket_bronze = "coingecko-bronze-663354324751"
+bucket_bronze = "coingecko-bronze-663354324751" 
 staging_path = f"s3://{bucket_staging}/raw/"
 bronze_path = f"s3://{bucket_bronze}/bronze/"
 
