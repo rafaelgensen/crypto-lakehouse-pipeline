@@ -19,9 +19,6 @@ on:
           - "false"
           - "true"
 
-env:
-  TF_VAR_API_KEY_CG: ${{ secrets.API_KEY_CG }}
-
 jobs:
   terraform:
     name: Terraform Deploy or Destroy - Capabilities
@@ -52,10 +49,13 @@ jobs:
         run: terraform -chdir=infra validate
 
       - name: Executar Plano
-        run: terraform -chdir=infra plan -out=tfplan.out
+        run: |
+          export TF_VAR_API_KEY_CG="${{ secrets.API_KEY_CG }}"
+          terraform -chdir=infra plan -out=tfplan.out
 
       - name: Aplicar ou Destruir Recursos
         run: |
+          export TF_VAR_API_KEY_CG="${{ secrets.API_KEY_CG }}"
           if [ "${{ github.event.inputs.destroy }}" == "true" ]; then
             echo "⚠️ Destruindo infraestrutura..."
             terraform -chdir=infra destroy -auto-approve

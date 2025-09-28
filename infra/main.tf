@@ -69,13 +69,4 @@ module "glue_gold" {
 
 module "stepfunc" {
   source = "./modules/stepfunc"
-
-  depends_on = [
-    module.s3,
-    module.glue,
-    module.glue_ingest,
-    module.glue_bronze,
-    module.glue_silver,
-    module.glue_gold
-  ]
 }
