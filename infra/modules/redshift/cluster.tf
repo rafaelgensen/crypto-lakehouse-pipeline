@@ -1,6 +1,5 @@
 resource "aws_redshiftserverless_namespace" "this" {
   namespace_name = "lakehouse-ns"
-  admin_username = "lakehouse_admin"
 }
 
 resource "aws_redshiftserverless_workgroup" "this" {
