@@ -1,4 +1,4 @@
-ame: Terraform - Capabilities Provisioning
+name: Terraform - Capabilities Provisioning
 
 on:
   pull_request:
