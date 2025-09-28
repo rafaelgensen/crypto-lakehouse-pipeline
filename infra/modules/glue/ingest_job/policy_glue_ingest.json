@@ -17,6 +17,13 @@
         "arn:aws:s3:::coingecko-staging-663354324751",
         "arn:aws:s3:::coingecko-staging-663354324751/*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameter"
+      ],
+      "Resource": "arn:aws:ssm:us-east-1:123456789012:parameter/coing-gecko/api_key"
     }
   ]
 }
