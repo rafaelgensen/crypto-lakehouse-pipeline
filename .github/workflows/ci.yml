@@ -1,4 +1,4 @@
-name: Terraform - Capabilities Provisioning
+ame: Terraform - Capabilities Provisioning
 
 on:
   pull_request:
@@ -19,10 +19,14 @@ on:
           - "false"
           - "true"
 
+env:
+  TF_VAR_API_KEY_CG: ${{ secrets.API_KEY_CG }}
+
 jobs:
   terraform:
     name: Terraform Deploy or Destroy - Capabilities
     runs-on: ubuntu-latest
+    environment: API_KEY
 
     if: startsWith(github.head_ref || github.ref_name, 'prod/') || github.event_name == 'workflow_dispatch'
 
@@ -42,6 +46,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Verificar se a variável foi carregada corretamente
+        run: |
+          if [ -z "$TF_VAR_API_KEY_CG" ]; then
+            echo "::error::❌ Variável TF_VAR_API_KEY_CG está vazia!"
+            exit 1
+          else
+            echo "✅ TF_VAR_API_KEY_CG foi carregada com sucesso."
+            echo "::add-mask::$TF_VAR_API_KEY_CG"
+          fi
+
       - name: Inicializar Terraform
         run: terraform -chdir=infra init
 
@@ -49,26 +63,10 @@ jobs:
         run: terraform -chdir=infra validate
 
       - name: Executar Plano
-        run: |
-          echo "::add-mask::${{ secrets.API_KEY_CG }}"
-          export TF_VAR_API_KEY_CG="${{ secrets.API_KEY_CG }}"
-
-          if [ -z "$TF_VAR_API_KEY_CG" ]; then
-            echo "❌ Variável TF_VAR_API_KEY_CG está vazia!"
-            exit 1
-          fi
-
-          terraform -chdir=infra plan -out=tfplan.out
+        run: terraform -chdir=infra plan -out=tfplan.out
 
       - name: Aplicar ou Destruir Recursos
         run: |
-          export TF_VAR_API_KEY_CG="${{ secrets.API_KEY_CG }}"
-
-          if [ -z "$TF_VAR_API_KEY_CG" ]; then
-            echo "❌ Variável TF_VAR_API_KEY_CG está vazia!"
-            exit 1
-          fi
-
           if [ "${{ github.event.inputs.destroy }}" == "true" ]; then
             echo "⚠️ Destruindo infraestrutura..."
             terraform -chdir=infra destroy -auto-approve
