@@ -1,4 +1,4 @@
-# Upload do script
+# Upload do script bronze
 resource "aws_s3_object" "glue_bronze_script" {
   bucket      = "coingecko-glue-scripts-663354324751"
   key         = "glue_job_bronze.py"
@@ -6,12 +6,11 @@ resource "aws_s3_object" "glue_bronze_script" {
   source_hash = filebase64sha256("${path.module}/glue_job_bronze.py")
 }
 
-# Glue Job
+# Glue Job Bronze
 resource "aws_glue_job" "bronze" {
+  name       = "coingecko-bronze-etl"
+  role_arn   = aws_iam_role.glue_bronze_role.arn
   depends_on = [aws_s3_object.glue_bronze_script]
-
-  name     = "coingecko-bronze-etl"
-  role_arn = aws_iam_role.glue_bronze_role.arn
 
   command {
     name            = "glueetl"
@@ -25,9 +24,9 @@ resource "aws_glue_job" "bronze" {
   description       = "Staging to Bronze"
 
   default_arguments = {
-    "--enable-metrics"     = "true"
-    "--TempDir"            = "s3://coingecko-bronze-663354324751/temp/"
-    "--dq-results-path"    = "s3://coingecko-bronze-663354324751/dq-results/"
-    "--job-language"       = "python"
+    "--enable-metrics"  = "true"
+    "--TempDir"         = "s3://coingecko-bronze-663354324751/temp/"
+    "--dq-results-path" = "s3://coingecko-bronze-663354324751/dq-results/"
+    "--job-language"    = "python"
   }
 }
