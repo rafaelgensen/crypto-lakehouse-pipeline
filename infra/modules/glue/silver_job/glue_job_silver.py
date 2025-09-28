@@ -21,7 +21,7 @@ spark = SparkSession.builder.appName("CoingeckoBronzeToSilver").getOrCreate()
 # =========================
 bucket_bronze = "coingecko-bronze-663354324751"
 bucket_silver = "coingecko-silver-663354324751"
-bronze_path = f"s3://{bucket_bronze}/bronze/"
+bronze_path = f"s3://{bucket_bronze}/bronze/" 
 silver_path = f"s3://{bucket_silver}/silver/"
 
 # =========================
