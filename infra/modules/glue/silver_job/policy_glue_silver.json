@@ -17,12 +17,7 @@
         "arn:aws:s3:::coingecko-bronze-663354324751/*",
         "arn:aws:s3:::coingecko-silver-663354324751",
         "arn:aws:s3:::coingecko-silver-663354324751/*"
-      ],
-      "Condition": {
-        "StringEquals": {
-          "aws:SourceAccount": "663354324751"
-        }
-      }
+      ]
     }
   ]
 }

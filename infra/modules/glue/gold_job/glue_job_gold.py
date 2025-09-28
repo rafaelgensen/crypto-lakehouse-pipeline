@@ -43,7 +43,7 @@ logger.info(f"Records read from silver: {df_silver.count()}")
 
 df_gold = df_silver.groupBy("id", "name", "symbol", "anomesdia").agg(
     avg("current_price").alias("avg_price_usd"),
-    spark_min("current_price").alias("min_price_usd"),
+    spark_min("current_price").alias("min_price_usd"), 
     spark_max("current_price").alias("max_price_usd"),
     count("*").alias("records_count")
 ).withColumn("last_updated", current_timestamp())

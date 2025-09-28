@@ -32,7 +32,7 @@ params = {
     "x_cg_demo_api_key": API_KEY,
     "vs_currency": "usd",
     "sparkline": "true",
-    "per_page": 150
+    "per_page": 150 
 } 
 
 # Make API request
