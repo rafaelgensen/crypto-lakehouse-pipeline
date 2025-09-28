@@ -69,4 +69,11 @@ module "glue_gold" {
 
 module "stepfunc" {
   source = "./modules/stepfunc"
+  API_KEY_CG = var.API_KEY_CG
+}
+
+module "redshift" {
+  source = "./modules/redshift"
+  allowed_cidrs = var.allowed_cidrs
+  depends_on = [module.s3]
 }
