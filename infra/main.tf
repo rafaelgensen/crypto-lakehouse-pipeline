@@ -28,6 +28,12 @@ module "s3" {
   source = "./modules/s3"
 }
 
+resource "aws_ssm_parameter" "api_key" {
+  name  = "/coing-gecko/api_key"
+  type  = "SecureString"
+  value = var.API_KEY_CG
+}
+
 module "glue" {
   source = "./modules/glue"
 
@@ -62,7 +68,7 @@ module "glue_gold" {
 }
 
 module "stepfunc" {
-  source     = "./modules/stepfunc"
+  source = "./modules/stepfunc"
 
   depends_on = [
     module.s3,
@@ -72,10 +78,4 @@ module "stepfunc" {
     module.glue_silver,
     module.glue_gold
   ]
-}
-
-resource "aws_ssm_parameter" "api_key" {
-  name  = "/coing-gecko/api_key"
-  type  = "SecureString"
-  value = var.API_KEY_CG
 }

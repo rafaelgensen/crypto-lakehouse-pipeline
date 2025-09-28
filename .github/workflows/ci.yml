@@ -20,7 +20,7 @@ on:
           - "true"
 
 env:
-  TF_VAR_API_KEY_CG: ${{ secrets.API_KEY.API_KEY_CG }}
+  TF_VAR_API_KEY_CG: ${{ secrets.API_KEY_CG }}
 
 jobs:
   terraform:
