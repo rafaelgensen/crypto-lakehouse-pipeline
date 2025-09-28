@@ -33,7 +33,7 @@ logger.info(f"Number of records read: {df_raw.count()}")
 # ========================
 
 # Ensure required fields are not null
-required_columns = ["id", "name", "symbol", "current_price"]
+required_columns = ["id", "name", "symbol", "current_price"] 
 
 for col_name in required_columns:
     df_raw = df_raw.filter(col(col_name).isNotNull())

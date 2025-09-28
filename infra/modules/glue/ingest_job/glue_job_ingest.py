@@ -26,14 +26,14 @@ API_KEY = parameter['Parameter']['Value']
 # Configuration
 url = "https://api.coingecko.com/api/v3/coins/markets"
 bucket_name = "coingecko-staging-663354324751"
-
+ 
 # API request parameters 
 params = {
     "x_cg_demo_api_key": API_KEY,
     "vs_currency": "usd",
     "sparkline": "true",
     "per_page": 150
-}
+} 
 
 # Make API request
 logger.info("Calling CoinGecko API...")

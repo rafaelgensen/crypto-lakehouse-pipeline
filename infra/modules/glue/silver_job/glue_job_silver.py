@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Initialize Spark session
-spark = SparkSession.builder.appName("CoingeckoBronzeToSilver").getOrCreate()
+spark = SparkSession.builder.appName("CoingeckoBronzeToSilver").getOrCreate() 
 
 # =========================
 # Configuration
