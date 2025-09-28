@@ -39,11 +39,11 @@ jobs:
         with:
           terraform_version: 1.5.7
 
-      - name: Instalar AWS CLI
+      - name: Atualizar AWS CLI (caso necessário)
         run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
+          unzip -q awscliv2.zip
+          sudo ./aws/install --update
           aws --version
 
       - name: Configurar credenciais AWS
