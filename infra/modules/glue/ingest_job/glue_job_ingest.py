@@ -22,7 +22,7 @@ parameter = ssm.get_parameter(
 API_KEY = parameter['Parameter']['Value']
 
 # ============================================
-
+   
 # Configuration
 url = "https://api.coingecko.com/api/v3/coins/markets"
 bucket_name = "coingecko-staging-663354324751"
