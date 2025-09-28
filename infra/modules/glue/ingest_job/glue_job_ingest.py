@@ -3,11 +3,7 @@ import json
 import logging
 from datetime import datetime
 from pyspark.sql import SparkSession
-import sys
-from awsglue.utils import getResolvedOptions
-
-# Declare os parâmetros esperados
-args = getResolvedOptions(sys.argv, ['--API_KEY'])
+import boto3
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -16,8 +12,18 @@ logger = logging.getLogger(__name__)
 # Initialize Spark session
 spark = SparkSession.builder.appName("CoingeckoIngestion").getOrCreate()
 
+# ===== GET API KEY FROM PARAMETER STORE =====
+ssm = boto3.client('ssm', region_name='us-east-1')  # Altere a região se necessário
+
+parameter = ssm.get_parameter(
+    Name="/coing-gecko/api_key",
+    WithDecryption=True
+)
+API_KEY = parameter['Parameter']['Value']
+
+# ============================================
+
 # Configuration
-API_KEY = args['--API_KEY']
 url = "https://api.coingecko.com/api/v3/coins/markets"
 bucket_name = "coingecko-staging-663354324751"
 

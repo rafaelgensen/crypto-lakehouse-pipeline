@@ -47,7 +47,13 @@ module "glue_gold" {
   source = "./modules/glue/gold_job"
 }
 
-module "stepfunc" {
-  source = "./modules/stepfunc"
-  API_KEY_CG = var.API_KEY_CG
+#module "stepfunc" {
+#  source = "./modules/stepfunc"
+#  API_KEY_CG = var.API_KEY_CG
+#}
+
+resource "aws_ssm_parameter" "api_key" {
+  name  = "/coing-gecko/api_key"
+  type  = "SecureString"
+  value = var.API_KEY_CG
 }

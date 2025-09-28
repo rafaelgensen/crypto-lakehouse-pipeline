@@ -39,10 +39,6 @@ resource "aws_sfn_state_machine" "glue_etl_pipeline" {
         Resource   = "arn:aws:states:::glue:startJobRun.sync",  # .sync waits for job to finish
         Parameters = {
           JobName = "coingecko-ingest-etl"
-          Arguments = {
-            "--API_KEY" = var.API_KEY_CG
-            
-      }
         },
         Next       = "GlueJobBronze",
         Catch = [{
