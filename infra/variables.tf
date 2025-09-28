@@ -7,5 +7,5 @@ variable "API_KEY_CG" {
 variable "allowed_cidrs" {
   description = "CIDR blocks allowed to acessar Redshift"
   type        = list(string)
-  default     = ["0.0.0.0/0"] # uso temporário
+  default     = ["0.0.0.0/0"] 
 }

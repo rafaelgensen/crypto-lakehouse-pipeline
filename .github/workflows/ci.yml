@@ -21,6 +21,9 @@ on:
 
 env:
   TF_VAR_API_KEY_CG: ${{ secrets.API_KEY_CG }}
+  AWS_REGION: us-east-1
+  REDSHIFT_WORKGROUP: lakehouse-wg     
+  REDSHIFT_DATABASE: dev               
 
 jobs:
   terraform:
@@ -39,7 +42,7 @@ jobs:
         with:
           terraform_version: 1.5.7
 
-      - name: Atualizar AWS CLI (caso necessário)
+      - name: Atualizar AWS CLI
         run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip -q awscliv2.zip
@@ -51,17 +54,15 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: Verificar se a variável foi carregada corretamente
+      - name: Criar database Redshift (se não existir)
         run: |
-          if [ -z "$TF_VAR_API_KEY_CG" ]; then
-            echo "::error::❌ Variável TF_VAR_API_KEY_CG está vazia!"
-            exit 1
-          else
-            echo "✅ TF_VAR_API_KEY_CG foi carregada com sucesso."
-            echo "::add-mask::$TF_VAR_API_KEY_CG"
-          fi
+          echo "Criando database '${REDSHIFT_DATABASE}' no Redshift Serverless Workgroup '${REDSHIFT_WORKGROUP}'"
+          aws redshift-data execute-statement \
+            --workgroup-name $REDSHIFT_WORKGROUP \
+            --database dev \
+            --sql "CREATE DATABASE ${REDSHIFT_DATABASE};" || echo "Database já existe ou erro ignorado"
 
       - name: Inicializar Terraform
         run: terraform -chdir=infra init

@@ -69,10 +69,22 @@ module "glue_gold" {
 
 module "stepfunc" {
   source = "./modules/stepfunc"
+  depends_on = [
+    module.glue_bronze, 
+    module.glue_gold, 
+    module.glue_silver, 
+    module.glue_ingest, 
+    module.glue, 
+    module.lambda 
+    ]
 }
 
 module "redshift" {
   source = "./modules/redshift"
   allowed_cidrs = var.allowed_cidrs
-  depends_on = [module.s3]
+}
+
+module "lambda" {
+  source = "./modules/lambda"
+  depends_on = [module.redshift]
 }
