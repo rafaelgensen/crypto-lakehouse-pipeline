@@ -88,7 +88,7 @@ For questions or contributions, please open an issue or contact me at linkedin: 
 
 ![Execution](./assets/pipeline_v2_execution.png)
 
-## Future Enhancements
+## Future Enhancements 
 
 - Expand Glue analyses to include predictive views, enabling more advanced forecasting and insights.
 - Increase data load frequency to daily or near real-time to improve data freshness and responsiveness.
