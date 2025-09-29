@@ -22,8 +22,6 @@ on:
 env:
   TF_VAR_API_KEY_CG: ${{ secrets.API_KEY_CG }}
   AWS_REGION: us-east-1
-  REDSHIFT_WORKGROUP: lakehouse-wg     
-  REDSHIFT_DATABASE: dev               
 
 jobs:
   terraform:
@@ -55,14 +53,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-
-      - name: Criar database Redshift (se não existir)
-        run: |
-          echo "Criando database '${REDSHIFT_DATABASE}' no Redshift Serverless Workgroup '${REDSHIFT_WORKGROUP}'"
-          aws redshift-data execute-statement \
-            --workgroup-name $REDSHIFT_WORKGROUP \
-            --database dev \
-            --sql "CREATE DATABASE ${REDSHIFT_DATABASE};" || echo "Database já existe ou erro ignorado"
 
       - name: Inicializar Terraform
         run: terraform -chdir=infra init

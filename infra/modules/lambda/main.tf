@@ -1,48 +1,45 @@
-resource "aws_iam_role" "lambda_exec" {
-  name = "lambda-bootstrap-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{
-      Effect = "Allow",
-      Principal = {
-        Service = "lambda.amazonaws.com"
-      },
-      Action = "sts:AssumeRole"
-    }]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_basic" {
-  role       = aws_iam_role.lambda_exec.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-}
-
-resource "aws_iam_role_policy" "redshift_access" {
-  name = "LambdaRedshiftDataAccess"
+resource "aws_iam_role_policy" "lambda_glue_access" {
+  name = "LambdaGlueCatalogAccess"
   role = aws_iam_role.lambda_exec.id
 
   policy = jsonencode({
     Version = "2012-10-17",
-    Statement = [{
-      Effect = "Allow",
-      Action = [
-        "redshift-data:ExecuteStatement",
-        "redshift-data:GetStatementResult"
-      ],
-      Resource = "*"
-    }]
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "glue:CreateDatabase",
+          "glue:CreateTable",
+          "glue:UpdateTable",
+          "glue:GetDatabase",
+          "glue:GetTable",
+          "glue:GetTables",
+          "glue:DeleteTable",
+          "glue:BatchCreatePartition",
+          "glue:GetPartitions"
+        ],
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:ListBucket"
+        ],
+        Resource = [
+          "arn:aws:s3:::coingecko-gold-663354324751",
+          "arn:aws:s3:::coingecko-gold-663354324751/*",
+          "arn:aws:s3:::coingecko-silver-663354324751",
+          "arn:aws:s3:::coingecko-silver-663354324751/*"
+        ]
+      }
+    ]
   })
 }
 
-data "archive_file" "lambda_package" {
-  type        = "zip"
-  source_dir  = "${path.module}"
-  output_path = "${path.module}/lambda_bootstrap.zip"
-}
-
 resource "aws_lambda_function" "bootstrap" {
-  function_name = "lambda-bootstrap-redshift"
+  function_name = "lambda-bootstrap-glue"
   role          = aws_iam_role.lambda_exec.arn
   handler       = "handler.lambda_handler"
   runtime       = "python3.9"
@@ -53,16 +50,8 @@ resource "aws_lambda_function" "bootstrap" {
 
   environment {
     variables = {
-      WORKGROUP_NAME = var.redshift_workgroup
-      DATABASE_NAME  = var.redshift_database
+      S3_BUCKET_SILVER = "coingecko-silver-663354324751"
+      S3_BUCKET_GOLD   = "coingecko-gold-663354324751"
     }
   }
-}
-
-resource "null_resource" "invoke_lambda" {
-  provisioner "local-exec" {
-    command = "aws lambda invoke --function-name ${aws_lambda_function.bootstrap.function_name} --payload '{}' response.json"
-  }
-
-  depends_on = [aws_lambda_function.bootstrap]
 }
