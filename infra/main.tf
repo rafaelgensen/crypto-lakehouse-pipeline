@@ -69,10 +69,17 @@ module "glue_gold" {
 
 module "stepfunc" {
   source = "./modules/stepfunc"
+  lambda_function_arn = module.lambda.bootstrap_lambda_arn
+  depends_on = [
+    module.glue_bronze, 
+    module.glue_gold, 
+    module.glue_silver, 
+    module.glue_ingest, 
+    module.glue, 
+    module.lambda 
+    ]
 }
 
-module "redshift" {
-  source = "./modules/redshift"
-  allowed_cidrs = var.allowed_cidrs
-  depends_on = [module.s3]
+module "lambda" {
+  source = "./modules/lambda"
 }
