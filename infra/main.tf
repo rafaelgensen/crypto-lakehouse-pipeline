@@ -80,11 +80,6 @@ module "stepfunc" {
     ]
 }
 
-module "redshift" {
-  source = "./modules/redshift"
-  allowed_cidrs = var.allowed_cidrs
-}
-
 module "lambda" {
   source = "./modules/lambda"
   depends_on = [module.redshift]

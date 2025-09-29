@@ -1,3 +1,9 @@
+data "archive_file" "lambda_package" {
+  type        = "zip"
+  source_dir  = "${path.module}/src"  # Ajuste aqui para a pasta do seu código Python (onde está o handler.py)
+  output_path = "${path.module}/lambda_bootstrap.zip"
+}
+
 resource "aws_iam_role_policy" "lambda_glue_access" {
   name = "LambdaGlueCatalogAccess"
   role = aws_iam_role.lambda_exec.id
