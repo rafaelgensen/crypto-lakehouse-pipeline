@@ -45,7 +45,7 @@ resource "aws_iam_role" "step_functions_role" {
   })
 }
 
-# Attach necessary managed policies to Step Functions role
+# Attach managed policies to Step Functions role
 resource "aws_iam_role_policy_attachment" "step_functions_glue_policy" {
   role       = aws_iam_role.step_functions_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
@@ -56,7 +56,7 @@ resource "aws_iam_role_policy_attachment" "step_functions_basic_execution" {
   policy_arn = "arn:aws:iam::aws:policy/AWSStepFunctionsFullAccess"
 }
 
-# Custom inline policy to allow Step Function to invoke Lambda
+# Inline policy: allow Step Functions to invoke Lambda
 resource "aws_iam_role_policy" "step_functions_lambda_invoke" {
   name = "StepFunctionInvokeLambda"
   role = aws_iam_role.step_functions_role.id
