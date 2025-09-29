@@ -8,8 +8,6 @@ on:
       - opened
       - synchronize
 
-
-
 env:
   TF_VAR_API_KEY_CG: ${{ secrets.API_KEY_CG }}
   AWS_REGION: us-east-1
@@ -19,8 +17,6 @@ jobs:
     name: Terraform Deploy or Destroy - Capabilities
     runs-on: ubuntu-latest
     environment: API_KEY
-
-    if: startsWith(github.head_ref || github.ref_name, 'prod/') || github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout do código
@@ -56,4 +52,3 @@ jobs:
 
       - name: Aplicar mudanças
         run: terraform -chdir=infra apply -auto-approve tfplan.out
-
