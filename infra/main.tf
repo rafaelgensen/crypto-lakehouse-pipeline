@@ -69,6 +69,7 @@ module "glue_gold" {
 
 module "stepfunc" {
   source = "./modules/stepfunc"
+  lambda_function_arn = module.lambda.bootstrap_lambda_arn
   depends_on = [
     module.glue_bronze, 
     module.glue_gold, 

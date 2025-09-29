@@ -1,4 +1,3 @@
-# IAM Role para Step Functions
 resource "aws_iam_role" "step_functions_role" {
   name = "StepFunctionsGlueExecutionRole"
 
@@ -14,7 +13,6 @@ resource "aws_iam_role" "step_functions_role" {
   })
 }
 
-# Attach políticas necessárias para Glue, Logs e Step Functions
 resource "aws_iam_role_policy_attachment" "step_functions_glue_policy" {
   role       = aws_iam_role.step_functions_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
@@ -25,28 +23,30 @@ resource "aws_iam_role_policy_attachment" "step_functions_basic_execution" {
   policy_arn = "arn:aws:iam::aws:policy/AWSStepFunctionsFullAccess"
 }
 
-# Política inline para invocar o Lambda (necessário para chamar o Lambda dentro do Step Function)
 resource "aws_iam_role_policy" "step_functions_lambda_invoke" {
-  name = "StepFunctionsLambdaInvokePolicy"
+  name = "StepFunctionsInvokeLambda"
   role = aws_iam_role.step_functions_role.id
 
   policy = jsonencode({
     Version = "2012-10-17",
-    Statement = [{
-      Effect = "Allow",
-      Action = "lambda:InvokeFunction",
-      Resource = aws_lambda_function.bootstrap.arn
-    }]
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = [
+          "lambda:InvokeFunction"
+        ],
+        Resource = var.lambda_function_arn
+      }
+    ]
   })
 }
 
-# Máquina de estado Step Functions
 resource "aws_sfn_state_machine" "glue_etl_pipeline" {
   name     = "coingecko-etl-pipeline"
   role_arn = aws_iam_role.step_functions_role.arn
 
   definition = jsonencode({
-    Comment = "ETL Pipeline: Glue Ingest -> Bronze -> Lambda Bootstrap -> Silver -> Gold",
+    Comment = "ETL Pipeline: Glue Ingest -> Bronze -> Bootstrap Lambda -> Silver -> Gold",
     StartAt = "GlueJobBIngest",
     States = {
       GlueJobBIngest = {
@@ -55,7 +55,7 @@ resource "aws_sfn_state_machine" "glue_etl_pipeline" {
         Parameters = {
           JobName = "coingecko-ingest-etl"
         },
-        Next       = "GlueJobBronze",
+        Next = "GlueJobBronze",
         Catch = [{
           ErrorEquals = ["States.ALL"],
           ResultPath  = "$.error",
@@ -68,18 +68,18 @@ resource "aws_sfn_state_machine" "glue_etl_pipeline" {
         Parameters = {
           JobName = "coingecko-bronze-etl"
         },
-        Next       = "LambdaBootstrapSchemas",
+        Next = "LambdaBootstrap",
         Catch = [{
           ErrorEquals = ["States.ALL"],
           ResultPath  = "$.error",
           Next        = "FailState"
         }]
       },
-      LambdaBootstrapSchemas = {
-        Type = "Task",
-        Resource = "arn:aws:states:::lambda:invoke",
+      LambdaBootstrap = {
+        Type       = "Task",
+        Resource   = "arn:aws:states:::lambda:invoke",
         Parameters = {
-          FunctionName = aws_lambda_function.bootstrap.arn,
+          FunctionName = var.lambda_function_arn,
           Payload = {
             action = "create_schemas"
           }
@@ -87,8 +87,8 @@ resource "aws_sfn_state_machine" "glue_etl_pipeline" {
         Next = "GlueJobSilver",
         Catch = [{
           ErrorEquals = ["States.ALL"],
-          ResultPath = "$.error",
-          Next = "FailState"
+          ResultPath  = "$.error",
+          Next        = "FailState"
         }]
       },
       GlueJobSilver = {
@@ -97,7 +97,7 @@ resource "aws_sfn_state_machine" "glue_etl_pipeline" {
         Parameters = {
           JobName = "coingecko-silver-etl"
         },
-        Next       = "GlueToGold",
+        Next = "GlueToGold",
         Catch = [{
           ErrorEquals = ["States.ALL"],
           ResultPath  = "$.error",
@@ -118,9 +118,9 @@ resource "aws_sfn_state_machine" "glue_etl_pipeline" {
         }]
       },
       FailState = {
-        Type    = "Fail",
-        Cause   = "ETL Job Failed",
-        Error   = "JobExecutionError"
+        Type  = "Fail",
+        Cause = "ETL Job Failed",
+        Error = "JobExecutionError"
       }
     }
   })
