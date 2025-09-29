@@ -54,6 +54,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Remover null_resource.associate_iam_role do estado (se existir)
+        run: |
+          terraform -chdir=infra init -input=false
+          terraform -chdir=infra state list | grep null_resource.associate_iam_role && terraform -chdir=infra state rm null_resource.associate_iam_role || echo "null_resource.associate_iam_role não está no estado"
+
       - name: Inicializar Terraform
         run: terraform -chdir=infra init
 
