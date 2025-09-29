@@ -83,7 +83,3 @@ module "stepfunc" {
 module "lambda" {
   source = "./modules/lambda"
 }
-
-module "redshift" {
-  source = "./modules/redshift"
-}

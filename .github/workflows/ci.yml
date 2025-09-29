@@ -8,16 +8,7 @@ on:
       - opened
       - synchronize
 
-  workflow_dispatch:
-    inputs:
-      destroy:
-        description: "Deseja destruir os recursos?"
-        required: true
-        default: "false"
-        type: choice
-        options:
-          - "false"
-          - "true"
+
 
 env:
   TF_VAR_API_KEY_CG: ${{ secrets.API_KEY_CG }}
@@ -63,12 +54,6 @@ jobs:
       - name: Executar Plano
         run: terraform -chdir=infra plan -out=tfplan.out
 
-      - name: Aplicar ou Destruir Recursos
-        run: |
-          if [ "${{ github.event.inputs.destroy }}" == "true" ]; then
-            echo "⚠️ Destruindo infraestrutura..."
-            terraform -chdir=infra destroy -auto-approve
-          else
-            echo "✅ Aplicando infraestrutura..."
-            terraform -chdir=infra apply -auto-approve tfplan.out
-          fi
+      - name: Aplicar mudanças
+        run: terraform -chdir=infra apply -auto-approve tfplan.out
+
