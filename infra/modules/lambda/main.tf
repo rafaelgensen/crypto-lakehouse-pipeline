@@ -1,9 +1,11 @@
+# Cria o ZIP com o código da lambda
 data "archive_file" "lambda_package" {
   type        = "zip"
-  source_dir  = "${path.module}/src"  # Ajuste aqui para a pasta do seu código Python (onde está o handler.py)
+  source_dir  = "${path.module}/src"                # Certo: pasta onde está o handler.py
   output_path = "${path.module}/lambda_bootstrap.zip"
 }
 
+# Políticas de acesso à Glue e S3
 resource "aws_iam_role_policy" "lambda_glue_access" {
   name = "LambdaGlueCatalogAccess"
   role = aws_iam_role.lambda_exec.id
@@ -44,10 +46,14 @@ resource "aws_iam_role_policy" "lambda_glue_access" {
   })
 }
 
+# Lambda Function
 resource "aws_lambda_function" "bootstrap" {
   function_name = "lambda-bootstrap-glue"
   role          = aws_iam_role.lambda_exec.arn
+
+  # handler = arquivo.py.nome_da_funcao
   handler       = "handler.lambda_handler"
+
   runtime       = "python3.9"
   timeout       = 30
 
