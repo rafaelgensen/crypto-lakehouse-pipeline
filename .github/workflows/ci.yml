@@ -8,6 +8,17 @@ on:
       - opened
       - synchronize
 
+  workflow_dispatch:
+    inputs:
+      destroy:
+        description: "Deseja destruir os recursos?"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
 env:
   TF_VAR_API_KEY_CG: ${{ secrets.API_KEY_CG }}
   AWS_REGION: us-east-1
@@ -17,6 +28,8 @@ jobs:
     name: Terraform Deploy or Destroy - Capabilities
     runs-on: ubuntu-latest
     environment: API_KEY
+
+    if: startsWith(github.head_ref || github.ref_name, 'prod/') || github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout do código
@@ -50,5 +63,12 @@ jobs:
       - name: Executar Plano
         run: terraform -chdir=infra plan -out=tfplan.out
 
-      - name: Aplicar mudanças
-        run: terraform -chdir=infra apply -auto-approve tfplan.out
+      - name: Aplicar ou Destruir Recursos
+        run: |
+          if [ "${{ github.event.inputs.destroy }}" == "true" ]; then
+            echo "⚠️ Destruindo infraestrutura..."
+            terraform -chdir=infra destroy -auto-approve
+          else
+            echo "✅ Aplicando infraestrutura..."
+            terraform -chdir=infra apply -auto-approve tfplan.out
+          fi
