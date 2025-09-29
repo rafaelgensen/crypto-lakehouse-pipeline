@@ -82,5 +82,4 @@ module "stepfunc" {
 
 module "lambda" {
   source = "./modules/lambda"
-  depends_on = [module.redshift]
 }
