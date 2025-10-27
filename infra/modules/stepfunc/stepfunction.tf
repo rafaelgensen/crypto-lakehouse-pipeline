@@ -65,7 +65,6 @@ definition = jsonencode({
       ],
       Next = "GlueJobSilver"
     },
-    # --- fim do paralelo ---
 
     GlueJobSilver = {
       Type       = "Task",
