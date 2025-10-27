@@ -5,7 +5,7 @@
 ## Description
 
 This project aims to read data from the Coingecko API, process it, and deliver it prepared for analysis through a robust and scalable data pipeline.
-
+ 
 
 ## Project Structure
 
