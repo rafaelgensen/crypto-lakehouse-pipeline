@@ -33,7 +33,7 @@ def create_glue_catalog():
                         {"Name": "last_updated", "Type": "timestamp"},
                         {"Name": "anomesdia", "Type": "string"},
                     ],
-                    "Location": f"s3://{silver_bucket}/silver/coins/",
+                    "Location": f"s3://{silver_bucket}/silver/",
                     "InputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat",
                     "OutputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat",
                     "SerdeInfo": {
@@ -65,7 +65,7 @@ def create_glue_catalog():
                         {"Name": "records_count", "Type": "int"},
                         {"Name": "last_updated", "Type": "timestamp"},
                     ],
-                    "Location": f"s3://{gold_bucket}/gold/coin_aggregates/",
+                    "Location": f"s3://{gold_bucket}/gold/",
                     "InputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat",
                     "OutputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat",
                     "SerdeInfo": {
