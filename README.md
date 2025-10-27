@@ -1,6 +1,6 @@
 # Coingecko Data Ingestion and Preparation Project
 
-![Project Cover](./assets/architecture.png)
+![Project Cover](./assets/architecture2.png)
 
 ## Description
 
