@@ -22,6 +22,8 @@ on:
 env:
   TF_VAR_API_KEY_CG: ${{ secrets.API_KEY_CG }}
   AWS_REGION: us-east-1
+  TF_BUCKET: coingecko-states-663354324751
+  TF_STATE_KEY: data-pipeline/terraform.tfstate
 
 jobs:
   terraform:
@@ -53,6 +55,23 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
+
+      - name: Bootstrap do bucket de backend
+        run: |
+          if ! aws s3api head-bucket --bucket $TF_BUCKET 2>/dev/null; then
+            echo "Bucket $TF_BUCKET não encontrado. Criando..."
+            aws s3api create-bucket \
+              --bucket $TF_BUCKET \
+              --region $AWS_REGION \
+              --create-bucket-configuration LocationConstraint=$AWS_REGION
+
+            aws s3api put-bucket-encryption \
+              --bucket $TF_BUCKET \
+              --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
+            echo "Bucket $TF_BUCKET criado."
+          else
+            echo "Bucket $TF_BUCKET já existe. Pulando criação."
+          fi
 
       - name: Inicializar Terraform
         run: terraform -chdir=infra init
