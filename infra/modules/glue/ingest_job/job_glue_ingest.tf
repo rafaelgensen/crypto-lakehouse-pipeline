@@ -13,7 +13,7 @@ resource "aws_glue_job" "ingest" {
 
   command {
     name            = "glueetl"
-    script_location = "s3://${aws_s3_bucket.glue-scripts.bucket}/glue_job_ingest.py"
+    script_location = "s3://coingecko-glue-scripts-663354324751/glue_job_ingest.py"
     python_version  = "3"
   }
 
