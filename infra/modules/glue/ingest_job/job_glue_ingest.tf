@@ -1,17 +1,6 @@
-# Bucket para armazenar scripts do Glue
-resource "aws_s3_bucket" "glue-scripts" {
-  bucket = "coingecko-glue-scripts-663354324751"
-}
-
-# Access policy
-resource "aws_s3_bucket_policy" "glue-scripts" {
-  bucket = aws_s3_bucket.glue-scripts.id
-  policy = file("${path.module}/policy_scripts_bucket.json")
-}
-
 # Upload do script
 resource "aws_s3_object" "glue_ingest_script" {
-  bucket      = aws_s3_bucket.glue-scripts.id 
+  bucket      = "coingecko-glue-scripts-663354324751"
   key         = "glue_job_ingest.py"
   source      = "${path.module}/glue_job_ingest.py"
   source_hash = filebase64sha256("${path.module}/glue_job_ingest.py")
