@@ -26,7 +26,14 @@ locals {
 
 module "s3" {
   source = "./modules/s3"
-  depends_on = [module.glue]
+  depends_on = [
+    module.glue_bronze, 
+    module.glue_gold, 
+    module.glue_silver, 
+    module.glue_ingest, 
+    module.glue, 
+    module.lambda 
+    ]
 }
 
 resource "aws_ssm_parameter" "api_key" {
@@ -44,27 +51,22 @@ module "glue_ingest" {
   source = "./modules/glue/ingest_job"
 
   depends_on = [
-    module.s3,
     aws_ssm_parameter.api_key
   ]
 }
 
 module "glue_bronze" {
   source = "./modules/glue/bronze_job"
-
-  depends_on = [module.s3]
 }
 
 module "glue_silver" {
   source = "./modules/glue/silver_job"
 
-  depends_on = [module.s3]
 }
 
 module "glue_gold" {
   source = "./modules/glue/gold_job"
 
-  depends_on = [module.s3]
 }
 
 module "stepfunc" {
