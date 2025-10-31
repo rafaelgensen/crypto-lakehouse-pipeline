@@ -23,7 +23,7 @@ def create_glue_catalog():
         except glue.exceptions.AlreadyExistsException:
             pass
 
-    # 2. Table definitions
+    # 2. Table definitions (usando double)
     table_defs = {
         "silver": {
             "coins": {
@@ -33,7 +33,7 @@ def create_glue_catalog():
                     {"Name": "id", "Type": "string"},
                     {"Name": "name", "Type": "string"},
                     {"Name": "symbol", "Type": "string"},
-                    {"Name": "current_price", "Type": "decimal(18,4)"},
+                    {"Name": "current_price", "Type": "double"},
                     {"Name": "last_updated", "Type": "timestamp"},
                 ],
             }
@@ -46,9 +46,9 @@ def create_glue_catalog():
                     {"Name": "id", "Type": "string"},
                     {"Name": "name", "Type": "string"},
                     {"Name": "symbol", "Type": "string"},
-                    {"Name": "avg_price_usd", "Type": "decimal(18,4)"},
-                    {"Name": "min_price_usd", "Type": "decimal(18,4)"},
-                    {"Name": "max_price_usd", "Type": "decimal(18,4)"},
+                    {"Name": "avg_price_usd", "Type": "double"},
+                    {"Name": "min_price_usd", "Type": "double"},
+                    {"Name": "max_price_usd", "Type": "double"},
                     {"Name": "records_count", "Type": "int"},
                     {"Name": "last_updated", "Type": "timestamp"},
                 ],
@@ -87,6 +87,7 @@ def create_glue_catalog():
     def register_partitions(bucket, prefix, db, table, columns):
         partitions = []
         paginator = s3.get_paginator("list_objects_v2")
+
         for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
             for obj in page.get("Contents", []):
                 match = re.search(r"anomesdia=(\d{8})/", obj["Key"])
@@ -108,7 +109,7 @@ def create_glue_catalog():
                     }
                     partitions.append(part)
 
-        # Batch create (100 máx)
+        # Batch create (máximo 100 por chamada)
         for i in range(0, len(partitions), 100):
             batch = partitions[i : i + 100]
             try:
@@ -116,7 +117,6 @@ def create_glue_catalog():
             except glue.exceptions.AlreadyExistsException:
                 pass
             except glue.exceptions.InvalidInputException:
-                # Ignora se partição já existir
                 pass
 
     # silver
@@ -127,6 +127,7 @@ def create_glue_catalog():
         "coins",
         table_defs["silver"]["coins"]["columns"],
     )
+
     # gold
     register_partitions(
         gold_bucket,
