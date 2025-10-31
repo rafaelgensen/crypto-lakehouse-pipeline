@@ -3,9 +3,10 @@
 #  bucket = "coingecko-glue-scripts-663354324751"
 #}
 
+
 # Access policy
 resource "aws_s3_bucket_policy" "glue-scripts" {
-  bucket = aws_s3_bucket.glue-scripts.id
+  bucket = "coingecko-glue-scripts-663354324751"
   policy = file("${path.module}/policies/policy_scripts_bucket.json")
 }
 
@@ -19,7 +20,7 @@ resource "aws_s3_bucket_policy" "glue-scripts" {
 # Bucket Coin-Gecko - Staging Policy
 
 resource "aws_s3_bucket_policy" "coingecko-staging" {
-  bucket = aws_s3_bucket.coingecko-staging.id
+  bucket = "coingecko-staging-663354324751"
   policy = file("${path.module}/policies/coingecko-staging-policy.json")
 }
 
@@ -32,7 +33,7 @@ resource "aws_s3_bucket_policy" "coingecko-staging" {
 # Bucket Coin-Gecko - bronze Policy
 
 resource "aws_s3_bucket_policy" "coingecko-bronze" {
-  bucket = aws_s3_bucket.coingecko-bronze.id
+  bucket = "coingecko-bronze-663354324751"
   policy = file("${path.module}/policies/coingecko-bronze-policy.json")
 }
 
@@ -45,7 +46,7 @@ resource "aws_s3_bucket_policy" "coingecko-bronze" {
 # Bucket Coin-Gecko - Silver Policy
 
 resource "aws_s3_bucket_policy" "coingecko-silver" {
-  bucket = aws_s3_bucket.coingecko-silver.id
+  bucket = "coingecko-silver-663354324751"
   policy = file("${path.module}/policies/coingecko-silver-policy.json")
 }
 
@@ -58,36 +59,36 @@ resource "aws_s3_bucket_policy" "coingecko-silver" {
 # Bucket Coin-Gecko - Gold Policy
 
 resource "aws_s3_bucket_policy" "coingecko-gold" {
-  bucket = aws_s3_bucket.coingecko-gold.id
+  bucket = "coingecko-gold-663354324751"
   policy = file("${path.module}/policies/coingecko-gold-policy.json")
 }
 
 # Bucket de logs
-#resource "aws_s3_bucket" "log_bucket" {
-#  bucket = "logs-coingecko-staging-663354324751"
-#}
+resource "aws_s3_bucket" "log_bucket" {
+  bucket = "logs-coingecko-staging-663354324751"
+}
 
 # Habilitar logging
 resource "aws_s3_bucket_logging" "staging_logging" {
-  bucket = aws_s3_bucket.coingecko-staging.id
+  bucket = "coingecko-staging-663354324751"
   target_bucket = aws_s3_bucket.log_bucket.id
   target_prefix = "staging/"
 }
 
 resource "aws_s3_bucket_logging" "bronze_logging" {
-  bucket = aws_s3_bucket.coingecko-bronze.id
+  bucket = "coingecko-bronze-663354324751"
   target_bucket = aws_s3_bucket.log_bucket.id
   target_prefix = "bronze/"
 }
 
 resource "aws_s3_bucket_logging" "silver_logging" {
-  bucket = aws_s3_bucket.coingecko-silver.id
+  bucket = "coingecko-silver-663354324751"
   target_bucket = aws_s3_bucket.log_bucket.id
   target_prefix = "silver/"
 }
 
 resource "aws_s3_bucket_logging" "gold_logging" {
-  bucket = aws_s3_bucket.coingecko-gold.id
+  bucket = "coingecko-gold-663354324751"
   target_bucket = aws_s3_bucket.log_bucket.id
   target_prefix = "gold/"
 }

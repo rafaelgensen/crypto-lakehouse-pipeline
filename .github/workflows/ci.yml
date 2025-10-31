@@ -77,7 +77,8 @@ jobs:
             "coingecko-glue-scripts-663354324751" \
             "coingecko-bronze-663354324751" \
             "coingecko-silver-663354324751" \
-            "coingecko-gold-663354324751"
+            "coingecko-gold-663354324751" \
+            "coingecko-staging-663354324751"
           do
             create_bucket_if_missing "$BUCKET"
           done
