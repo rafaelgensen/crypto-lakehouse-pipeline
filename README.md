@@ -1,6 +1,6 @@
 # Coingecko Data Ingestion and Preparation Project
 
-![Project Cover](./assets/architecture2.png)
+![Project Cover](./assets/architecture3.png)
 
 ## Description
 
@@ -86,7 +86,7 @@ For questions or contributions, please open an issue or contact me at linkedin: 
 
 ---
 
-![Execution](./assets/pipeline_v2_execution.png)
+![Execution](./assets/pipeline_v3_execution.png)
 
 ## Future Enhancements 
 
