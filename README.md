@@ -86,7 +86,9 @@ For questions or contributions, please open an issue or contact me at linkedin: 
 
 ---
 
-![Execution](./assets/pipeline_v3_execution.png)
+![Execution](./assets/pipeline_v3_execution.png) 
+
+![Query](./assets/query_v3.png)
 
 ## Future Enhancements 
 
