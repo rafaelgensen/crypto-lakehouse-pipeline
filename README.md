@@ -34,7 +34,7 @@ I faced a lot of difficulty trying to send the API key to Glue. I tried several 
 
 In the end, I chose **Parameter Store** to simplify, as it allows storing the key securely and accessibly, avoiding the complexity of additional setups like KMS with dynamic keys.
 
----
+--- 
 
 ### 2. Redshift Configuration
 
