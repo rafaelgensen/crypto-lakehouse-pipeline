@@ -26,6 +26,7 @@ locals {
 
 module "s3" {
   source = "./modules/s3"
+  depends_on = [module.glue]
 }
 
 resource "aws_ssm_parameter" "api_key" {
@@ -37,7 +38,6 @@ resource "aws_ssm_parameter" "api_key" {
 module "glue" {
   source = "./modules/glue"
 
-  depends_on = [module.s3]
 }
 
 module "glue_ingest" {

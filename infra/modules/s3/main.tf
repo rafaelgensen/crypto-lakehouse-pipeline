@@ -1,7 +1,7 @@
 # Bucket para armazenar scripts do Glue
-resource "aws_s3_bucket" "glue-scripts" {
-  bucket = "coingecko-glue-scripts-663354324751"
-}
+# resource "aws_s3_bucket" "glue-scripts" {
+#  bucket = "coingecko-glue-scripts-663354324751"
+#}
 
 # Access policy
 resource "aws_s3_bucket_policy" "glue-scripts" {
@@ -12,9 +12,9 @@ resource "aws_s3_bucket_policy" "glue-scripts" {
 
 # Bucket Coin-Gecko - Staging
 
-resource "aws_s3_bucket" "coingecko-staging" {
-  bucket = "coingecko-staging-663354324751"
-}
+#resource "aws_s3_bucket" "coingecko-staging" {
+#  bucket = "coingecko-staging-663354324751"
+#}
 
 # Bucket Coin-Gecko - Staging Policy
 
@@ -25,9 +25,9 @@ resource "aws_s3_bucket_policy" "coingecko-staging" {
 
 # Bucket Coin-Gecko - Bronze
 
-resource "aws_s3_bucket" "coingecko-bronze" {
-  bucket = "coingecko-bronze-663354324751"
-}
+#resource "aws_s3_bucket" "coingecko-bronze" {
+#  bucket = "coingecko-bronze-663354324751"
+#}
 
 # Bucket Coin-Gecko - bronze Policy
 
@@ -38,9 +38,9 @@ resource "aws_s3_bucket_policy" "coingecko-bronze" {
 
 # Bucket Coin-Gecko - Silver
 
-resource "aws_s3_bucket" "coingecko-silver" {
-  bucket = "coingecko-silver-663354324751"
-}
+#resource "aws_s3_bucket" "coingecko-silver" {
+#  bucket = "coingecko-silver-663354324751"
+#}
 
 # Bucket Coin-Gecko - Silver Policy
 
@@ -51,9 +51,9 @@ resource "aws_s3_bucket_policy" "coingecko-silver" {
 
 # Bucket Coin-Gecko - Gold
 
-resource "aws_s3_bucket" "coingecko-gold" {
-  bucket = "coingecko-gold-663354324751"
-}
+#resource "aws_s3_bucket" "coingecko-gold" {
+#  bucket = "coingecko-gold-663354324751"
+#}
 
 # Bucket Coin-Gecko - Gold Policy
 
@@ -63,9 +63,9 @@ resource "aws_s3_bucket_policy" "coingecko-gold" {
 }
 
 # Bucket de logs
-resource "aws_s3_bucket" "log_bucket" {
-  bucket = "logs-coingecko-staging-663354324751"
-}
+#resource "aws_s3_bucket" "log_bucket" {
+#  bucket = "logs-coingecko-staging-663354324751"
+#}
 
 # Habilitar logging
 resource "aws_s3_bucket_logging" "staging_logging" {

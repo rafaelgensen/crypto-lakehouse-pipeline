@@ -56,19 +56,31 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Bootstrap do bucket de backend
+      - name: Bootstrap dos buckets de backend e dados
         run: |
-          if ! aws s3api head-bucket --bucket $TF_BUCKET 2>/dev/null; then
-            echo "Bucket $TF_BUCKET não encontrado. Criando..."
-            aws s3api create-bucket --bucket $TF_BUCKET
+          create_bucket_if_missing () {
+            local BUCKET=$1
+            if ! aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null; then
+              echo "Criando bucket $BUCKET..."
+              aws s3api create-bucket --bucket "$BUCKET"
+              aws s3api put-bucket-encryption \
+                --bucket "$BUCKET" \
+                --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
+              echo "Bucket $BUCKET criado."
+            else
+              echo "Bucket $BUCKET já existe."
+            fi
+          }
 
-            aws s3api put-bucket-encryption \
-              --bucket $TF_BUCKET \
-              --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
-            echo "Bucket $TF_BUCKET criado."
-          else
-            echo "Bucket $TF_BUCKET já existe. Pulando criação."
-          fi
+          for BUCKET in \
+            "coingecko-states-663354324751" \
+            "coingecko-glue-scripts-663354324751" \
+            "coingecko-bronze-663354324751" \
+            "coingecko-silver-663354324751" \
+            "coingecko-gold-663354324751"
+          do
+            create_bucket_if_missing "$BUCKET"
+          done
 
       - name: Inicializar Terraform
         run: terraform -chdir=infra init
